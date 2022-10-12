@@ -6,7 +6,7 @@ class Resposta extends StatelessWidget {
   final String text;
   final void Function() handleAction;
 
-  Resposta(this.text, this.handleAction);
+  Resposta(this.text, this.handleAction, {super.key});
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     foregroundColor: Colors.white,
