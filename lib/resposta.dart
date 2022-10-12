@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class Resposta extends StatelessWidget {
   final String text;
-  final void Function() handleAction;
+  final VoidCallback handleAction;
 
   Resposta(this.text, this.handleAction, {super.key});
 

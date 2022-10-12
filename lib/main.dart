@@ -14,6 +14,7 @@ class PerguntaApp extends StatefulWidget {
 
 class _PerguntaAppState extends State<PerguntaApp> {
   int _perguntaSelecionada = 0;
+  int _pontuacaoTotal = 0;
   final String _title = "Perguntas";
   final String data = 'Parabéns!';
   final List<Map<String, dynamic>> _perguntas = const [
@@ -49,12 +50,15 @@ class _PerguntaAppState extends State<PerguntaApp> {
     }
   ];
 
-  void _responder() {
+  _responder(int pontuacao) {
     if (isQuestionSelected) {
       setState(() {
         _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
       });
     }
+
+    print(_pontuacaoTotal);
   }
 
   bool get isQuestionSelected {
@@ -65,8 +69,12 @@ class _PerguntaAppState extends State<PerguntaApp> {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> respostas =
         isQuestionSelected ? _perguntas[_perguntaSelecionada]['respostas'] : [];
-    List<Widget> widget =
-        respostas.map((resp) => Resposta(resp['texto'], _responder)).toList();
+    List<Widget> widget = respostas.map((resp) {
+      return Resposta(
+        resp['texto'],
+        () => _responder(resp['pontuacao']),
+      );
+    }).toList();
 
     return MaterialApp(
       home: Scaffold(
