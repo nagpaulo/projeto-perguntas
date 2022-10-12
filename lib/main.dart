@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:projeto_perguntas/questionario.dart';
 import './questao.dart';
 import './resposta.dart';
 import './resultado.dart';
@@ -18,15 +19,33 @@ class _PerguntaAppState extends State<PerguntaApp> {
   final List<Map<String, dynamic>> _perguntas = const [
     {
       'texto': 'Qual é a sua cor favorita?',
-      'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco', 'Outro'],
+      'respostas': [
+        {'texto': 'Preto', 'pontuacao': 10},
+        {'texto': 'Vermelho', 'pontuacao': 8},
+        {'texto': 'Verde', 'pontuacao': 5},
+        {'texto': 'Branco', 'pontuacao': 3},
+        {'texto': 'Outro', 'pontuacao': 1},
+      ],
     },
     {
       'texto': 'Qual é o seu animal favorito?',
-      'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão', 'Outro'],
+      'respostas': [
+        {'texto': 'Coelho', 'pontuacao': 10},
+        {'texto': 'Cobra', 'pontuacao': 8},
+        {'texto': 'Elefante', 'pontuacao': 5},
+        {'texto': 'Leão', 'pontuacao': 3},
+        {'texto': 'Outro', 'pontuacao': 1},
+      ],
     },
     {
       'texto': 'Qual é o seu instrutor favorito?',
-      'respostas': ['Paulo', 'Bebeto', 'Daniel', 'Ronaldo', 'Outro'],
+      'respostas': [
+        {'texto': 'Paulo', 'pontuacao': 8},
+        {'texto': 'Bebeto', 'pontuacao': 10},
+        {'texto': 'Daniel', 'pontuacao': 5},
+        {'texto': 'Ronaldo', 'pontuacao': 3},
+        {'texto': 'Outro', 'pontuacao': 1},
+      ],
     }
   ];
 
@@ -44,10 +63,10 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> respostas =
+    List<Map<String, dynamic>> respostas =
         isQuestionSelected ? _perguntas[_perguntaSelecionada]['respostas'] : [];
     List<Widget> widget =
-        respostas.map((t) => Resposta(t, _responder)).toList();
+        respostas.map((resp) => Resposta(resp['texto'], _responder)).toList();
 
     return MaterialApp(
       home: Scaffold(
@@ -62,11 +81,10 @@ class _PerguntaAppState extends State<PerguntaApp> {
           ),
         ),
         body: isQuestionSelected
-            ? Column(
-                children: <Widget>[
-                  Questao(_perguntas[_perguntaSelecionada]['texto'].toString()),
-                  ...widget,
-                ],
+            ? Questionario(
+                perguntaSelecionada: _perguntaSelecionada,
+                perguntas: _perguntas,
+                widget: widget,
               )
             : Resultado(data),
       ),
