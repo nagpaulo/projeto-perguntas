@@ -11,44 +11,70 @@ class PerguntaApp extends StatefulWidget {
 }
 
 class _PerguntaAppState extends State<PerguntaApp> {
-  var _perguntaSelecionada = 0;
+  int _perguntaSelecionada = 0;
+  final String _title = "Perguntas";
+  final String data = 'Parabéns!';
+  final List<Map<String, dynamic>> _perguntas = const [
+    {
+      'texto': 'Qual é a sua cor favorita?',
+      'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco', 'Outro'],
+    },
+    {
+      'texto': 'Qual é o seu animal favorito?',
+      'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão', 'Outro'],
+    },
+    {
+      'texto': 'Qual é o seu instrutor favorito?',
+      'respostas': ['Paulo', 'Bebeto', 'Daniel', 'Ronaldo', 'Outro'],
+    }
+  ];
 
   void _responder() {
-    setState(() {
-      _perguntaSelecionada++;
-    });
+    if (isQuestionSelected) {
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
+  }
+
+  bool get isQuestionSelected {
+    return _perguntaSelecionada < _perguntas.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, Object>> perguntas = [
-      {
-        'texto': 'Qual é a sua cor favorita?',
-        'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco', 'Outro'],
-      },
-      {
-        'texto': 'Qual é o seu animal favorito?',
-        'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão', 'Outro'],
-      },
-      {
-        'texto': 'Qual é o seu instrutor favorito?',
-        'respostas': ['Paulo', 'Bebeto', 'Daniel', 'Ronaldo', 'Outro'],
-      }
-    ];
+    List<String> respostas =
+        isQuestionSelected ? _perguntas[_perguntaSelecionada]['respostas'] : [];
+    List<Widget> widget =
+        respostas.map((t) => Resposta(t, _responder)).toList();
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Perguntas'),
+          title: Container(
+            width: double.infinity,
+            child: Text(
+              _title,
+              style: TextStyle(fontSize: 28),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
-        body: Column(
-          children: <Widget>[
-            Questao(perguntas[_perguntaSelecionada]['texto'].toString()),
-            Resposta('Resposta 1', _responder),
-            Resposta('Resposta 2', _responder),
-            Resposta('Resposta 3', _responder),
-          ],
-        ),
+        body: isQuestionSelected
+            ? Column(
+                children: <Widget>[
+                  Questao(_perguntas[_perguntaSelecionada]['texto'].toString()),
+                  ...widget,
+                ],
+              )
+            : Center(
+                child: Text(
+                  data,
+                  style: TextStyle(
+                    fontSize: 28,
+                  ),
+                ),
+              ),
       ),
     );
   }
