@@ -16,7 +16,6 @@ class _PerguntaAppState extends State<PerguntaApp> {
   int _perguntaSelecionada = 0;
   int _pontuacaoTotal = 0;
   final String _title = "Perguntas";
-  final String data = 'Parabéns!';
   final List<Map<String, dynamic>> _perguntas = const [
     {
       'texto': 'Qual é a sua cor favorita?',
@@ -94,7 +93,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
                 perguntas: _perguntas,
                 widget: widget,
               )
-            : Resultado(data),
+            : Resultado(_pontuacaoTotal),
       ),
     );
   }
